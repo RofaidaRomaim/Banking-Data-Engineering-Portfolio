@@ -1,1 +1,22 @@
-
+WITH LocationMapping AS (
+    SELECT 
+        DES_NAT_LAN AS CityName, 
+        TAB_ENT AS CityCode 
+    FROM Mapping_Table -- Changed from TEXT_TAB for security
+    WHERE TAB_ID = 190 
+      AND TAB_ENT IN (SELECT DISTINCT CITY_LOC_CODE FROM CustomerAddresses)
+)
+SELECT
+    COUNT(CustomerID) AS TotalCustomers,
+    CityCode AS City_ID,
+    CityName AS City_Name
+FROM (
+    SELECT 
+        d.CUS_NUM AS CustomerID, 
+        d.CITY_LOC_CODE, 
+        tn.CityName 
+    FROM CustomerAddresses d
+    LEFT JOIN LocationMapping tn ON d.CITY_LOC_CODE = tn.CityCode
+)
+GROUP BY CityCode, CityName
+ORDER BY TotalCustomers DESC;
