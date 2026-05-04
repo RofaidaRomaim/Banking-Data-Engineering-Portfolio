@@ -2,7 +2,7 @@ WITH LocationMapping AS (
     SELECT 
         DES_NAT_LAN AS CityName, 
         TAB_ENT AS CityCode 
-    FROM Mapping_Table -- Changed from TEXT_TAB for security
+    FROM Mapping_Table 
     WHERE TAB_ID = 190 
       AND TAB_ENT IN (SELECT DISTINCT CITY_LOC_CODE FROM CustomerAddresses)
 )
